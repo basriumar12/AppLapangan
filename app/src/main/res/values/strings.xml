@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">AppLapangan</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Jadwal Lapangan</string>
+    <string name="menu_slideshow">Booking</string>
+    <string name="menu_transaksi">Transaksi</string>
+    <string name="label_masuk">Selamat datang</string>
+    <string name="label_email">email</string>
+    <string name="password">password</string>
+    <string name="label_lupa_password">lupa password</string>
+    <string name="label_belum_punya_akun_sini_daftar_dulu">Belum punya akun? daftar dulu</string>
+    <string name="label_login">Login</string>
+    <string name="label_register">Register</string>
+    <string name="label_sudah_punya_akun_silahkan_login">Sudah punya Akun? Silahkan Login.</string>
+</resources>
