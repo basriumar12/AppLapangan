@@ -111,7 +111,9 @@ data class Lapangan(
 	val id: Int? = null,
 
 	@field:SerializedName("nama_lapangan")
-	val namaLapangan: String? = null
+	val namaLapangan: String? = null,
+	@field:SerializedName("gambar")
+	val gambar: String? = null
 ) : Parcelable {
 	constructor(parcel: Parcel) : this(
 		parcel.readValue(Int::class.java.classLoader) as? Int,
@@ -124,6 +126,7 @@ data class Lapangan(
 		parcel.readString(),
 		parcel.readParcelable(Gedung::class.java.classLoader),
 		parcel.readValue(Int::class.java.classLoader) as? Int,
+		parcel.readString(),
 		parcel.readString()
 	) {
 	}
@@ -140,6 +143,7 @@ data class Lapangan(
 		parcel.writeParcelable(gedung, flags)
 		parcel.writeValue(id)
 		parcel.writeString(namaLapangan)
+		parcel.writeString(gambar)
 	}
 
 	override fun describeContents(): Int {

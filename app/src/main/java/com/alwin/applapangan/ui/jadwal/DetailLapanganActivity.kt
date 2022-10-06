@@ -7,8 +7,13 @@ import com.alwin.applapangan.R
 import com.alwin.applapangan.models.booking.BodyBooking
 import com.alwin.applapangan.models.jadwal.ResponseJadwal
 import com.alwin.applapangan.utils.ApiInterface
+import com.alwin.applapangan.utils.AppConstant
 import com.alwin.applapangan.utils.Constant
 import com.alwin.applapangan.utils.ServiceGenerator
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
+import com.bumptech.glide.request.RequestOptions
 import com.driver.nyaku.models.BaseResponseOther
 import com.driver.nyaku.ui.BaseActivity
 import com.driver.nyaku.utils.currencyFormatter
@@ -34,7 +39,18 @@ class DetailLapanganActivity : BaseActivity() {
             "Lokasi Lapangan berada pada gedung : ${product?.lapangan?.gedung?.namaGedung} - Bisa menghubungi Pemilik :  ${product?.lapangan?.gedung?.kontakPemilik}"
         tv_deskripsi.text =
             "Alamat Lapangan : ${product?.lapangan?.gedung?.alamat} - ${product?.lapangan?.gedung?.provinsi}, ${product?.lapangan?.gedung?.kabupaten}, ${product?.lapangan?.gedung?.kecamatan}"
+        val glideUrl = GlideUrl(
+            "${AppConstant.BASE_URL}show-image?image=${product?.lapangan?.gambar}",
+            LazyHeaders.Builder()
+                .addHeader("Authorization", "Bearer "+Prefuser().getToken().toString())
+                .build()
+        )
 
+        Glide.with(this)
+            .load(glideUrl)
+            .apply(RequestOptions.placeholderOf(R.drawable.no_image).error(R.drawable.no_image))
+
+            .into(img_lapangan)
 
         btn_booking.setOnClickListener {
             val api = ServiceGenerator.createService(
@@ -45,9 +61,12 @@ class DetailLapanganActivity : BaseActivity() {
 
             showLoading(this)
 
-            val id = product?.id?.toInt()
 
-            val body = BodyBooking(id, "baru")
+
+            val id = product?.id?.toInt()
+            val arrayId : ArrayList<Int>? = ArrayList()
+            id?.toInt()?.let { it1 -> arrayId?.add(it1) }
+            val body = BodyBooking(arrayId, "baru")
             api.postBooking(body).enqueue(object : Callback<BaseResponseOther> {
                 override fun onResponse(call: Call<BaseResponseOther>, response: Response<BaseResponseOther>) {
                     hideLoading()

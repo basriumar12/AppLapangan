@@ -1,5 +1,6 @@
 package com.alwin.applapangan.ui.booking
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alwin.applapangan.R
 import com.alwin.applapangan.models.booking.ResponseBooking
+import com.alwin.applapangan.models.lapangan.ResponseLapangan
+import com.alwin.applapangan.ui.home.DetailShowLapanganActivity
 import com.alwin.applapangan.utils.ApiInterface
 import com.alwin.applapangan.utils.Constant
 import com.alwin.applapangan.utils.ServiceGenerator
@@ -90,7 +93,10 @@ class SlideshowFragment : BaseFragment(), AdapterBooking.OnListener {
     }
 
     override fun onClickGrup(data: ResponseBooking) {
-        
+        startActivity(
+            Intent(activity, DetailShowLapanganBookingActivity::class.java)
+                .putExtra(ResponseBooking::class.simpleName, data)
+        )
     }
 
 

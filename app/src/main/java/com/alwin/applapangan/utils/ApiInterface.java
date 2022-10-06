@@ -3,11 +3,13 @@ package com.alwin.applapangan.utils;
 
 import com.alwin.applapangan.models.booking.BodyBooking;
 import com.alwin.applapangan.models.booking.ResponseBooking;
+import com.alwin.applapangan.models.gedung.ResponseGedungItem;
 import com.alwin.applapangan.models.jadwal.ResponseJadwal;
 import com.alwin.applapangan.models.lapangan.ResponseLapangan;
 import com.alwin.applapangan.models.login.BodyLogin;
 import com.alwin.applapangan.models.login.ResponseProfile;
 import com.alwin.applapangan.models.register.BodyRegister;
+import com.alwin.applapangan.models.transaksi.ResponseTransaksi;
 import com.driver.nyaku.models.BaseResponse;
 import com.driver.nyaku.models.BaseResponseOther;
 import retrofit2.Call;
@@ -41,6 +43,12 @@ public interface ApiInterface {
 
     @GET("pembayaran")
     Call<BaseResponse<List<ResponseBooking>>> getPembayaran();
+
+    @GET("gedung")
+    Call<BaseResponse<List<ResponseGedungItem>>> getGedung();
+
+    @GET("transaksi")
+    Call<BaseResponse<List<ResponseTransaksi>>> getTransaksi();
     //
 //    @FormUrlEncoded
 //    @PUT("users/logout")

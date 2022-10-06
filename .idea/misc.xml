@@ -9,6 +9,7 @@
         <entry key="app/src/main/res/drawable/edt_bg_gray.xml" value="0.225" />
         <entry key="app/src/main/res/drawable/side_nav_bar.xml" value="0.225" />
         <entry key="app/src/main/res/layout/activity_detail_lapangan.xml" value="0.20885416666666667" />
+        <entry key="app/src/main/res/layout/activity_detail_lapangan_booking.xml" value="0.20885416666666667" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.20885416666666667" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.20885416666666667" />

@@ -8,8 +8,13 @@ import com.alwin.applapangan.models.booking.BodyBooking
 import com.alwin.applapangan.models.jadwal.ResponseJadwal
 import com.alwin.applapangan.models.lapangan.ResponseLapangan
 import com.alwin.applapangan.utils.ApiInterface
+import com.alwin.applapangan.utils.AppConstant
 import com.alwin.applapangan.utils.Constant
 import com.alwin.applapangan.utils.ServiceGenerator
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
+import com.bumptech.glide.request.RequestOptions
 import com.driver.nyaku.models.BaseResponseOther
 import com.driver.nyaku.ui.BaseActivity
 import com.driver.nyaku.utils.currencyFormatter
@@ -17,6 +22,7 @@ import com.driver.nyaku.utils.invisible
 import com.google.gson.Gson
 import com.gorontalodigital.preference.Prefuser
 import kotlinx.android.synthetic.main.activity_detail_lapangan.*
+import kotlinx.android.synthetic.main.item_lapangan.view.*
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -36,6 +42,18 @@ class DetailShowLapanganActivity : BaseActivity() {
             "Lokasi Lapangan berada pada gedung : ${product?.gedung?.namaGedung} - Dapat menghubungi pemilik :  ${product?.gedung?.kontakPemilik}"
         tv_deskripsi.text =
             "Alamat Lapangan : ${product?.gedung?.alamat} - ${product?.gedung?.provinsi}, ${product?.gedung?.kabupaten}, ${product?.gedung?.kecamatan}, Desa ${product?.gedung?.desa}"
+        val glideUrl = GlideUrl(
+            "${AppConstant.BASE_URL}show-image?image=${product?.gambar}",
+            LazyHeaders.Builder()
+                .addHeader("Authorization", "Bearer "+Prefuser().getToken().toString())
+                .build()
+        )
+
+        Glide.with(this)
+            .load(glideUrl)
+            .apply(RequestOptions.placeholderOf(R.drawable.no_image).error(R.drawable.no_image))
+
+            .into(img_lapangan)
 
 
         btn_booking.invisible()
@@ -49,8 +67,9 @@ class DetailShowLapanganActivity : BaseActivity() {
             showLoading(this)
 
             val id = product?.id?.toInt()
-
-            val body = BodyBooking(id, "baru")
+            val arrayId : ArrayList<Int>? = ArrayList()
+            id?.toInt()?.let { it1 -> arrayId?.add(it1) }
+            val body = BodyBooking(arrayId, "baru")
             api.postBooking(body).enqueue(object : Callback<BaseResponseOther> {
                 override fun onResponse(call: Call<BaseResponseOther>, response: Response<BaseResponseOther>) {
                     hideLoading()

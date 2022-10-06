@@ -28,6 +28,7 @@ fun View.invisible() {
 
 
 fun currencyFormatter(num: String): String {
+
     val m = java.lang.Double.parseDouble(num)
     val formatter = DecimalFormat("###,###,###")
     return formatter.format(m)

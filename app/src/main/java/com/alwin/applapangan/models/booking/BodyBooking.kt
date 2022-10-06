@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class BodyBooking(
 
 	@field:SerializedName("jadwal_ids")
-	val jadwalIds: Int? = null,
+	val jadwalIds: List<Int?>? = null,
 
 	@field:SerializedName("status")
 	val status: String? = null

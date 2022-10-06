@@ -1,4 +1,4 @@
-package com.alwin.applapangan.ui.transaksi
+package com.alwin.applapangan.ui.gedung
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,24 +8,25 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.alwin.applapangan.R
-import com.alwin.applapangan.models.transaksi.ResponseTransaksi
-import com.driver.nyaku.utils.currencyFormatter
-import kotlinx.android.synthetic.main.item_jadwal.view.tv_date
+import com.alwin.applapangan.models.gedung.ResponseGedungItem
+import com.driver.nyaku.utils.invisible
+import kotlinx.android.synthetic.main.item_jadwal.view.*
+import kotlinx.android.synthetic.main.item_jadwal.view.img_lapangan
+import kotlinx.android.synthetic.main.item_lapangan.view.*
 import kotlinx.android.synthetic.main.item_lapangan.view.tv_name
 import kotlinx.android.synthetic.main.item_lapangan.view.tv_price
-import kotlinx.android.synthetic.main.item_transaksi.view.*
 import java.util.*
 
-class AdapterTransaksi(
-    val context: Context, val data: MutableList<ResponseTransaksi>,
+class AdapterGedung(
+    val context: Context, val data: MutableList<ResponseGedungItem>,
     private val itemListiner: OnListener
 ) :
-    RecyclerView.Adapter<AdapterTransaksi.ViewHolder>(), Filterable {
+    RecyclerView.Adapter<AdapterGedung.ViewHolder>(), Filterable {
 
-    var dataFilterList = ArrayList<ResponseTransaksi>()
+    var dataFilterList = ArrayList<ResponseGedungItem>()
 
     init {
-        dataFilterList = data as ArrayList<ResponseTransaksi>
+        dataFilterList = data as ArrayList<ResponseGedungItem>
     }
 
     companion object {
@@ -33,8 +34,8 @@ class AdapterTransaksi(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        var v: View =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_transaksi, parent, false)
+        val v: View =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_jadwal, parent, false)
 
         return ViewHolder(v)
     }
@@ -44,7 +45,7 @@ class AdapterTransaksi(
     }
 
     interface OnListener {
-        fun onClickGrup(data: ResponseTransaksi)
+        fun onClickGrup(data: ResponseGedungItem)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -56,15 +57,18 @@ class AdapterTransaksi(
     class ViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
-        fun bindView(data: ResponseTransaksi, listiner: OnListener) {
+        fun bindView(data: ResponseGedungItem, listiner: OnListener) {
 
             itemView.setOnClickListener {
                 listiner.onClickGrup(data)
             }
 
 
-            itemView.tv_name.text = "Booking Id : ${data.bookingId}"
-            itemView.tv_status.text = "Status Booking : ${data.status}"
+            itemView.tv_name.text = data.namaGedung
+                itemView.tv_price.text = "Alamat : ${data.alamat}"
+            itemView.tv_date.text = "Kontak pemilik : ${data.kontakPemilik}"
+
+            itemView.img_lapangan.invisible()
 
 
         }
@@ -76,11 +80,11 @@ class AdapterTransaksi(
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val charSearch = constraint.toString()
                 if (charSearch.isEmpty()) {
-                    dataFilterList = data as ArrayList<ResponseTransaksi>
+                    dataFilterList = data as ArrayList<ResponseGedungItem>
                 } else {
-                    val resultList = ArrayList<ResponseTransaksi>()
+                    val resultList = ArrayList<ResponseGedungItem>()
                     for (row in data) {
-                        if (row.bookingId.toString()?.toLowerCase(Locale.ROOT)
+                        if (row.namaGedung.toString()?.toLowerCase(Locale.ROOT)
                                 ?.contains(charSearch.toLowerCase(Locale.ROOT))!!
                         ) {
                             resultList.add(row)
@@ -94,7 +98,7 @@ class AdapterTransaksi(
             }
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                dataFilterList = results?.values as ArrayList<ResponseTransaksi>
+                dataFilterList = results?.values as ArrayList<ResponseGedungItem>
                 notifyDataSetChanged()
             }
 

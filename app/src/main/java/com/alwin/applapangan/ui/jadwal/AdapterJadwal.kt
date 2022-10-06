@@ -9,8 +9,16 @@ import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.alwin.applapangan.R
 import com.alwin.applapangan.models.jadwal.ResponseJadwal
+import com.alwin.applapangan.utils.AppConstant
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
+import com.bumptech.glide.request.RequestOptions
 import com.driver.nyaku.utils.currencyFormatter
+import com.gorontalodigital.preference.Prefuser
 import kotlinx.android.synthetic.main.item_jadwal.view.*
+import kotlinx.android.synthetic.main.item_jadwal.view.img_lapangan
+import kotlinx.android.synthetic.main.item_lapangan.view.*
 import kotlinx.android.synthetic.main.item_lapangan.view.tv_name
 import kotlinx.android.synthetic.main.item_lapangan.view.tv_price
 import java.util.*
@@ -63,10 +71,27 @@ class AdapterJadwal(
 
 
             itemView.tv_name.text = data.lapangan?.namaLapangan
-            itemView.tv_price.text = "Harga : Rp" + currencyFormatter(data.lapangan?.harga.toString())
-            itemView.tv_date.text = "Jadwal : ${data.tanggal} / jam : ${data?.mulai} - ${data.selesai} "
-           // Glide.with(itemView.context).load(data.harga).into(itemView.img_lapangan)
+            try {
 
+                itemView.tv_price.text = "Harga : Rp" + currencyFormatter(data.lapangan?.harga.toString())
+            } catch (e: NumberFormatException) {
+                itemView.tv_price.text = "Harga : Rp" + data.lapangan?.harga.toString()
+
+            }
+            itemView.tv_date.text = "Jadwal : ${data.tanggal} / jam : ${data?.mulai} - ${data.selesai} "
+
+            val glideUrl = GlideUrl(
+                "${AppConstant.BASE_URL}show-image?image=${data.lapangan?.gambar}",
+                LazyHeaders.Builder()
+                    .addHeader("Authorization", "Bearer " + Prefuser().getToken().toString())
+                    .build()
+            )
+            Glide.with(itemView.context)
+                .load(glideUrl)
+                .apply(RequestOptions.placeholderOf(R.drawable.no_image).error(R.drawable.no_image))
+                .into(itemView.img_lapangan)
+
+            // Glide.with(itemView.context).load(data.harga).into(itemView.img_lapangan)
 
 
         }

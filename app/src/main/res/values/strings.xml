@@ -9,6 +9,7 @@
 
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Jadwal Lapangan</string>
+    <string name="menu_gedung">Gedung</string>
     <string name="menu_slideshow">Booking</string>
     <string name="menu_transaksi">Transaksi</string>
     <string name="label_masuk">Selamat datang</string>

@@ -1,4 +1,4 @@
-package com.alwin.applapangan.ui.jadwal
+package com.alwin.applapangan.ui.gedung
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,8 +9,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alwin.applapangan.R
+import com.alwin.applapangan.models.gedung.ResponseGedungItem
 import com.alwin.applapangan.models.jadwal.ResponseJadwal
 import com.alwin.applapangan.models.lapangan.ResponseLapangan
+import com.alwin.applapangan.ui.jadwal.DetailLapanganActivity
 import com.alwin.applapangan.utils.ApiInterface
 import com.alwin.applapangan.utils.Constant
 import com.alwin.applapangan.utils.ServiceGenerator
@@ -24,7 +26,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class GalleryFragment : BaseFragment(), AdapterJadwal.OnListener {
+class GedungFragment : BaseFragment(), AdapterGedung.OnListener {
 
     lateinit var rv_jadwal: RecyclerView
     override fun onCreateView(
@@ -50,10 +52,10 @@ class GalleryFragment : BaseFragment(), AdapterJadwal.OnListener {
         )
 
         activity?.let { showLoading(it) }
-        api.jadwal.enqueue(object : Callback<BaseResponse<List<ResponseJadwal>>> {
+        api.gedung.enqueue(object : Callback<BaseResponse<List<ResponseGedungItem>>> {
             override fun onResponse(
-                call: Call<BaseResponse<List<ResponseJadwal>>>,
-                response: Response<BaseResponse<List<ResponseJadwal>>>
+                call: Call<BaseResponse<List<ResponseGedungItem>>>,
+                response: Response<BaseResponse<List<ResponseGedungItem>>>
             ) {
 
                 hideLoading()
@@ -61,7 +63,7 @@ class GalleryFragment : BaseFragment(), AdapterJadwal.OnListener {
 
                     if (response.body()?.status == true) {
                         val data = response.body()?.data
-                        val adapterJadwal = activity?.let { AdapterJadwal(it, data as MutableList<ResponseJadwal>,this@GalleryFragment) }
+                        val adapterJadwal = activity?.let { AdapterGedung(it, data as MutableList<ResponseGedungItem>,this@GedungFragment) }
                         rv_jadwal.layoutManager = GridLayoutManager(activity,2)
                         rv_jadwal.adapter = adapterJadwal
                         adapterJadwal?.notifyDataSetChanged()
@@ -80,15 +82,15 @@ class GalleryFragment : BaseFragment(), AdapterJadwal.OnListener {
                 }
             }
 
-            override fun onFailure(call: Call<BaseResponse<List<ResponseJadwal>>>, t: Throwable) {
+            override fun onFailure(call: Call<BaseResponse<List<ResponseGedungItem>>>, t: Throwable) {
 
             }
         })
     }
 
-    override fun onClickGrup(data: ResponseJadwal) {
-        startActivity(Intent(activity,DetailLapanganActivity::class.java)
-            .putExtra(ResponseJadwal::class.simpleName, data)
+    override fun onClickGrup(data: ResponseGedungItem) {
+        startActivity(Intent(activity, DetailLapanganActivity::class.java)
+            .putExtra(ResponseGedungItem::class.simpleName, data)
         )
     }
 

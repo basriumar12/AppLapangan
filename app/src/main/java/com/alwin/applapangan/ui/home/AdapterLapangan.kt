@@ -1,6 +1,7 @@
 package com.alwin.applapangan.ui.home
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,10 +10,16 @@ import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.alwin.applapangan.R
 import com.alwin.applapangan.models.lapangan.ResponseLapangan
+import com.alwin.applapangan.utils.AppConstant
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
+import com.bumptech.glide.request.RequestOptions
 import com.driver.nyaku.utils.currencyFormatter
+import com.gorontalodigital.preference.Prefuser
 import kotlinx.android.synthetic.main.item_lapangan.view.*
 import java.util.*
+
 
 class AdapterLapangan(
     val context: Context, val data: MutableList<ResponseLapangan>,
@@ -63,8 +70,20 @@ class AdapterLapangan(
 
             itemView.tv_name.text = "Nama : " + data.namaLapangan
             itemView.tv_price.text = "Harga : Rp" + currencyFormatter(data.harga.toString())
-           // Glide.with(itemView.context).load(data.harga).into(itemView.img_lapangan)
+            val glideUrl = GlideUrl(
+                "${AppConstant.BASE_URL}show-image?image=${data.gambar}",
+                LazyHeaders.Builder()
+                    .addHeader("Authorization", "Bearer "+Prefuser().getToken().toString())
+                    .build()
+            )
 
+            Glide.with(itemView.context)
+                .load(glideUrl)
+                .apply(RequestOptions.placeholderOf(R.drawable.no_image).error(R.drawable.no_image))
+
+                .into(itemView.img_lapangan)
+
+            Log.e("TAG","gambar ${data.gambar}")
 
 
         }

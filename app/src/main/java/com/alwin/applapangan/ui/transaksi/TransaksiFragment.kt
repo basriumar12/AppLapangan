@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alwin.applapangan.R
-import com.alwin.applapangan.models.booking.ResponseBooking
+import com.alwin.applapangan.models.transaksi.ResponseTransaksi
 import com.alwin.applapangan.utils.ApiInterface
 import com.alwin.applapangan.utils.Constant
 import com.alwin.applapangan.utils.ServiceGenerator
@@ -49,10 +49,10 @@ class TransaksiFragment : BaseFragment(), AdapterTransaksi.OnListener {
         )
 
         activity?.let { showLoading(it) }
-        api.getbooking().enqueue(object : Callback<BaseResponse<List<ResponseBooking>>>{
+        api.getTransaksi().enqueue(object : Callback<BaseResponse<List<ResponseTransaksi>>>{
             override fun onResponse(
-                call: Call<BaseResponse<List<ResponseBooking>>>,
-                response: Response<BaseResponse<List<ResponseBooking>>>
+                call: Call<BaseResponse<List<ResponseTransaksi>>>,
+                response: Response<BaseResponse<List<ResponseTransaksi>>>
             ) {
                 hideLoading()
                 if (response.isSuccessful) {
@@ -60,7 +60,7 @@ class TransaksiFragment : BaseFragment(), AdapterTransaksi.OnListener {
                     if (response.body()?.status == true) {
                         val data = response.body()?.data
                         val adapterTransaksi = activity?.let { AdapterTransaksi(it,
-                            data as MutableList<ResponseBooking>, this@TransaksiFragment) }
+                            data as MutableList<ResponseTransaksi>, this@TransaksiFragment) }
                         rv_transaksi.layoutManager = LinearLayoutManager(activity)
                         rv_transaksi.adapter = adapterTransaksi
                         adapterTransaksi?.notifyDataSetChanged()
@@ -81,7 +81,7 @@ class TransaksiFragment : BaseFragment(), AdapterTransaksi.OnListener {
                 }
             }
 
-            override fun onFailure(call: Call<BaseResponse<List<ResponseBooking>>>, t: Throwable) {
+            override fun onFailure(call: Call<BaseResponse<List<ResponseTransaksi>>>, t: Throwable) {
                 
                 hideLoading()
                 showErrorMessage("Gagal dapatkan data, periksa jaringan internet")
@@ -89,7 +89,7 @@ class TransaksiFragment : BaseFragment(), AdapterTransaksi.OnListener {
         })
     }
 
-    override fun onClickGrup(data: ResponseBooking) {
+    override fun onClickGrup(data: ResponseTransaksi) {
         
     }
 
