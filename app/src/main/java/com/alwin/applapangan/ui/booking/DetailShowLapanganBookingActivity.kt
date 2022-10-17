@@ -5,11 +5,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import androidx.recyclerview.widget.GridLayoutManager
 import com.alwin.applapangan.R
-import com.alwin.applapangan.models.booking.BodyBooking
+import com.alwin.applapangan.models.booking.BookingDetailsItem
 import com.alwin.applapangan.models.booking.ResponseBooking
-import com.alwin.applapangan.models.jadwal.ResponseJadwal
-import com.alwin.applapangan.models.lapangan.ResponseLapangan
+import com.alwin.applapangan.models.gedung.JadwalsItem
+import com.alwin.applapangan.ui.jadwal.AdapterJadwalForBooking
 import com.alwin.applapangan.utils.ApiInterface
 import com.alwin.applapangan.utils.AppConstant
 import com.alwin.applapangan.utils.Constant
@@ -27,22 +28,21 @@ import com.driver.nyaku.models.BaseResponseOther
 import com.driver.nyaku.ui.BaseActivity
 import com.driver.nyaku.utils.currencyFormatter
 import com.driver.nyaku.utils.invisible
-import com.google.gson.Gson
 import com.gorontalodigital.preference.Prefuser
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
-import kotlinx.android.synthetic.main.activity_detail_lapangan.*
-import kotlinx.android.synthetic.main.activity_detail_lapangan.btn_booking
-import kotlinx.android.synthetic.main.activity_detail_lapangan.img_lapangan
-import kotlinx.android.synthetic.main.activity_detail_lapangan.tv_date
-import kotlinx.android.synthetic.main.activity_detail_lapangan.tv_deskripsi
-import kotlinx.android.synthetic.main.activity_detail_lapangan.tv_gedung
-import kotlinx.android.synthetic.main.activity_detail_lapangan.tv_name
-import kotlinx.android.synthetic.main.activity_detail_lapangan.tv_price
 import kotlinx.android.synthetic.main.activity_detail_lapangan_booking.*
+import kotlinx.android.synthetic.main.activity_detail_lapangan_booking.btn_booking
+import kotlinx.android.synthetic.main.activity_detail_lapangan_booking.img_lapangan
+import kotlinx.android.synthetic.main.activity_detail_lapangan_booking.rv_jadwal
+import kotlinx.android.synthetic.main.activity_detail_lapangan_booking.tv_name
+import kotlinx.android.synthetic.main.activity_detail_lapangan_from_jadwal.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import org.json.JSONObject
 import pl.aprilapps.easyphotopicker.*
 import pub.devrel.easypermissions.EasyPermissions
@@ -51,7 +51,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 
-class DetailShowLapanganBookingActivity : BaseActivity() {
+
+class DetailShowLapanganBookingActivity : BaseActivity(), AdapterJadwalBooking.OnListener {
     var myFile: File? = null
     var idBooking = ""
     lateinit var easyImage: EasyImage
@@ -67,21 +68,32 @@ class DetailShowLapanganBookingActivity : BaseActivity() {
             .build()
         val product = intent.getParcelableExtra<ResponseBooking>(ResponseBooking::class.simpleName)
         idBooking = product?.id.toString()
-        tv_name.text = "Nama Lapangan : " + product?.jadwal?.lapangan?.namaLapangan
-        tv_price.text = "Harga perjam : " + currencyFormatter(product?.jadwal?.lapangan?.harga.toString())
-        tv_date.invisible()
+        tv_name.text = "Nama Lapangan : " + product?.bookingDetails?.get(0)?.jadwal?.lapangan?.namaLapangan
+        tv_status.text = "Status : ${product?.status}"
+        tv_price_total.text = "Total Harga : " + product?.totalBayar?.toString()?.let { currencyFormatter(it) }
 
         tv_gedung.text =
-            "Lokasi Lapangan berada pada gedung : ${product?.jadwal?.lapangan?.gedung?.namaGedung} - Dapat menghubungi pemilik :  ${product?.jadwal?.lapangan?.gedung?.kontakPemilik}"
+            "Lokasi Lapangan berada pada gedung : ${product?.bookingDetails?.get(0)?.jadwal?.lapangan?.gedung?.namaGedung} - Dapat menghubungi pemilik :  ${product?.bookingDetails?.get(0)?.jadwal?.lapangan?.gedung?.kontakPemilik}"
         tv_deskripsi.text =
-            "Alamat Lapangan : ${product?.jadwal?.lapangan?.gedung?.alamat} - ${product?.jadwal?.lapangan?.gedung?.provinsi}, ${product?.jadwal?.lapangan?.gedung?.kabupaten}, ${product?.jadwal?.lapangan?.gedung?.kecamatan}, Desa ${product?.jadwal?.lapangan?.gedung?.desa}"
+            "Alamat Lapangan : ${product?.bookingDetails?.get(0)?.jadwal?.lapangan?.gedung?.alamat} - ${product?.bookingDetails?.get(0)?.jadwal?.lapangan?.gedung?.provinsi}, ${product?.bookingDetails?.get(0)?.jadwal?.lapangan?.gedung?.kabupaten}, ${product?.bookingDetails?.get(0)?.jadwal?.lapangan?.gedung?.kecamatan}, Desa ${product?.bookingDetails?.get(0)?.jadwal?.lapangan?.gedung?.desa}"
 
         val glideUrl = GlideUrl(
-            "${AppConstant.BASE_URL}show-image?image=${product?.jadwal?.lapangan?.gambar}",
+            "${AppConstant.BASE_URL}show-image?image=${product?.bookingDetails?.get(0)?.jadwal?.lapangan?.gambar}",
             LazyHeaders.Builder()
                 .addHeader("Authorization", "Bearer " + Prefuser().getToken().toString())
                 .build()
         )
+
+
+        val adapterLapangan = this?.let {
+            AdapterJadwalBooking(
+                it,
+                product?.bookingDetails as MutableList<BookingDetailsItem>, this
+            )
+        }
+        rv_jadwal.layoutManager = GridLayoutManager(this, 1)
+        rv_jadwal.adapter = adapterLapangan
+        adapterLapangan?.notifyDataSetChanged()
 
         Glide.with(this)
             .load(glideUrl)
@@ -89,6 +101,9 @@ class DetailShowLapanganBookingActivity : BaseActivity() {
 
             .into(img_lapangan)
 
+        if (product?.status.equals("pembayaran terverifikasi")){
+            btn_booking.invisible()
+        }
         btn_booking.setOnClickListener {
             if (EasyPermissions.hasPermissions(this, android.Manifest.permission.CAMERA)) {
                 easyImage.openCameraForImage(this)
@@ -132,13 +147,13 @@ class DetailShowLapanganBookingActivity : BaseActivity() {
         easyImage.handleActivityResult(requestCode, resultCode, data, this,
             object : DefaultCallback() {
                 override fun onMediaFilesPicked(imageFiles: Array<MediaFile>, source: MediaSource) {
-                    var file = File(imageFiles.get(0).file.toString())
-                    Glide.with(this@DetailShowLapanganBookingActivity).load(file).into(img_bukti)
+                    val file = File(imageFiles.get(0).file.toString())
+                   // Glide.with(this@DetailShowLapanganBookingActivity).load(file).into(img_bukti)
                     myFile = file
                     imageFiles.let {
-                        myFile = File(it.get(0).file.toString())
-
-                        //Glide.with(this@DetailShowLapanganBookingActivity).load(myFile).into(img_bukti)
+                        //myFile = File(it.get(0).file.toString())
+                    uploadPhoto()
+                        Glide.with(this@DetailShowLapanganBookingActivity).load(myFile).into(img_bukti)
 
 
                     }
@@ -149,9 +164,46 @@ class DetailShowLapanganBookingActivity : BaseActivity() {
     }
 
     private fun uploadPhoto() {
+
+        val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), myFile)
+
+        val body = MultipartBody.Part.createFormData("bukti_bayar", myFile?.name, requestFile)
+
+
+        val bookingId: RequestBody = RequestBody.create(
+            MediaType.parse("text/plain"),
+            idBooking
+                .toString()
+        )
+
+        val api = ServiceGenerator.createService(
+            ApiInterface::class.java,
+            Prefuser().getToken(),
+            Constant.PASS
+        )
         showLoading(this)
+        Log.e("TAG","data body $bookingId ${body.body()}")
+//        api.uploadFIle(bookingId.toString(),body)
+//            .enqueue(object : Callback<BaseResponseOther>{
+//                override fun onResponse(call: Call<BaseResponseOther>, response: Response<BaseResponseOther>) {
+//                        hideLoading()
+//                    if (response.isSuccessful){
+//                        showLongSuccessMessage("Berhasil Upload")
+//                        finish()
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<BaseResponseOther>, t: Throwable) {
+//                    hideLoading()
+//                    showErrorMessage("gagal upload")
+//                    Log.e("TAG","gagal upload ${t.message}")
+//                }
+//            })
+
+        Log.e("TAG","$idBooking ${myFile?.name}")
+        val file = myFile?.path
         AndroidNetworking.upload("${AppConstant.BASE_URL}pembayaran")
-            .addMultipartFile("bukti_bayar", myFile)
+            .addMultipartFile("bukti_bayar", File(file))
             .addMultipartParameter("booking_id",idBooking)
             .addHeaders("Authorization", "Bearer ${Prefuser().getToken()}")
             .setTag("uploadTest")
@@ -174,8 +226,8 @@ class DetailShowLapanganBookingActivity : BaseActivity() {
                     val jsonObject = JSONObject(response.toString())
 
                     val msg = jsonObject.getString("message").toString()
-                    val data = jsonObject.getString("data").toString()
-                    val file = JSONObject(data.toString()).getString("file")
+                  //  val data = jsonObject.getString("data").toString()
+//                    val file = JSONObject(data.toString()).getString("file")
                     val datafileImage = JSONObject(file.toString()).getString("file_url")
 
 
@@ -198,5 +250,9 @@ class DetailShowLapanganBookingActivity : BaseActivity() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onClickGrup(data: BookingDetailsItem) {
+
     }
 }

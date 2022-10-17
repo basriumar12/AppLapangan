@@ -2,38 +2,30 @@ package com.alwin.applapangan.ui.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alwin.applapangan.R
-import com.alwin.applapangan.databinding.FragmentHomeBinding
-import com.alwin.applapangan.models.jadwal.ResponseJadwal
-import com.alwin.applapangan.models.lapangan.ResponseLapangan
-import com.alwin.applapangan.ui.jadwal.DetailLapanganActivity
+import com.alwin.applapangan.models.gedung.ResponseGedungItem
 import com.alwin.applapangan.utils.ApiInterface
 import com.alwin.applapangan.utils.Constant
 import com.alwin.applapangan.utils.ServiceGenerator
 import com.driver.nyaku.models.BaseResponse
 import com.driver.nyaku.ui.BaseFragment
 import com.driver.nyaku.utils.visible
+import com.google.gson.Gson
 import com.gorontalodigital.preference.Prefuser
-import kotlinx.android.synthetic.main.fragment_home.*
-import org.json.JSONObject
+import kotlinx.android.synthetic.main.fragment_home.tv_empty
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class HomeFragment : BaseFragment(), AdapterLapangan.OnListener {
+class HomeFragment : BaseFragment(), AdapterGedung.OnListener {
 
-    lateinit var rv_lapangan : RecyclerView
+    lateinit var rv_lapangan: RecyclerView
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,6 +39,7 @@ class HomeFragment : BaseFragment(), AdapterLapangan.OnListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getData()
+
     }
 
     private fun getData() {
@@ -57,54 +50,98 @@ class HomeFragment : BaseFragment(), AdapterLapangan.OnListener {
         )
 
         activity?.let { showLoading(it) }
-        api.lapangan.enqueue(object : Callback<BaseResponse<List<ResponseLapangan>>> {
+        api.getGedung().enqueue(object : Callback<BaseResponse<List<ResponseGedungItem>>> {
             override fun onResponse(
-                call: Call<BaseResponse<List<ResponseLapangan>>>,
-                response: Response<BaseResponse<List<ResponseLapangan>>>
+                call: Call<BaseResponse<List<ResponseGedungItem>>>,
+                response: Response<BaseResponse<List<ResponseGedungItem>>>
             ) {
+
                 hideLoading()
                 if (response.isSuccessful) {
 
-                    if (response.body()?.status == true) {
-
-                        val data = response.body()?.data
-                        val adapterLapangan = activity?.let {
-                            AdapterLapangan(
-                                it,
-                                data as MutableList<ResponseLapangan>, this@HomeFragment)}
-                        rv_lapangan.layoutManager = GridLayoutManager(activity,2)
-                        rv_lapangan.adapter = adapterLapangan
-                        adapterLapangan?.notifyDataSetChanged()
-
-                        if (data.isNullOrEmpty()){
-                            tv_empty.visible()
-                        }
-                    } else {
-                        val jObjError = JSONObject(response.errorBody()!!.string())
-                        showErrorMessage("Gagal dapatakan data,${jObjError.getString("message")}")
-
+                    val data = response.body()?.data
+                    val adapterJadwal = activity?.let {
+                        AdapterGedung(
+                            it,
+                            data as MutableList<ResponseGedungItem>,
+                            this@HomeFragment
+                        )
                     }
-                } else {
-                    val jObjError = JSONObject(response.errorBody()!!.string())
-                    showErrorMessage("Gagal dapatakan data,${jObjError.getString("message")}")
+                    rv_lapangan.layoutManager = GridLayoutManager(activity, 2)
+                    rv_lapangan.adapter = adapterJadwal
+                    adapterJadwal?.notifyDataSetChanged()
+                    if (data.isNullOrEmpty()) {
+                        tv_empty.visible()
+                    }
+                    Log.e("TAG","data gedung ${Gson().toJson(data)}")
 
                 }
-
             }
 
-            override fun onFailure(call: Call<BaseResponse<List<ResponseLapangan>>>, t: Throwable) {
-
+            override fun onFailure(call: Call<BaseResponse<List<ResponseGedungItem>>>, t: Throwable) {
                 hideLoading()
-                showErrorMessage("Gagal dapatkan data, periksa jaringan internet")
+                showErrorMessage("Periksa internet")
             }
         })
-
     }
 
-    override fun onClickGrup(data: ResponseLapangan) {
-        startActivity(
-            Intent(activity, DetailShowLapanganActivity::class.java)
-            .putExtra(ResponseLapangan::class.simpleName, data)
+
+//    private fun getData() {
+//        val api = ServiceGenerator.createService(
+//            ApiInterface::class.java,
+//            Prefuser().getToken(),
+//            Constant.PASS
+//        )
+//
+//        activity?.let { showLoading(it) }
+//        api.lapangan.enqueue(object : Callback<BaseResponse<List<ResponseLapangan>>> {
+//            override fun onResponse(
+//                call: Call<BaseResponse<List<ResponseLapangan>>>,
+//                response: Response<BaseResponse<List<ResponseLapangan>>>
+//            ) {
+//                hideLoading()
+//                if (response.isSuccessful) {
+//
+//                    if (response.body()?.status == true) {
+//
+//                        val data = response.body()?.data
+//                        val adapterLapangan = activity?.let {
+//                            AdapterLapangan(
+//                                it,
+//                                data as MutableList<ResponseLapangan>, this@HomeFragment)}
+//                        rv_lapangan.layoutManager = GridLayoutManager(activity,2)
+//                        rv_lapangan.adapter = adapterLapangan
+//                        adapterLapangan?.notifyDataSetChanged()
+//
+//                        if (data.isNullOrEmpty()){
+//                            tv_empty.visible()
+//                        }
+//                    } else {
+//                        val jObjError = JSONObject(response.errorBody()!!.string())
+//                        showErrorMessage("Gagal dapatakan data,${jObjError.getString("message")}")
+//
+//                    }
+//                } else {
+//                    val jObjError = JSONObject(response.errorBody()!!.string())
+//                    showErrorMessage("Gagal dapatakan data,${jObjError.getString("message")}")
+//
+//                }
+//
+//            }
+//
+//            override fun onFailure(call: Call<BaseResponse<List<ResponseLapangan>>>, t: Throwable) {
+//
+//                hideLoading()
+//                showErrorMessage("Gagal dapatkan data, periksa jaringan internet")
+//            }
+//        })
+//
+//    }
+
+
+    override fun onClickGrup(data: ResponseGedungItem) {
+        startActivity(Intent(activity, DetailShowGedungLapanganActivity::class.java)
+            .putExtra(ResponseGedungItem::class.simpleName, data)
         )
     }
 

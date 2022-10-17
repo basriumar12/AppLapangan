@@ -1,6 +1,7 @@
 package com.alwin.applapangan.ui.transaksi
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,10 +56,12 @@ class TransaksiFragment : BaseFragment(), AdapterTransaksi.OnListener {
                 response: Response<BaseResponse<List<ResponseTransaksi>>>
             ) {
                 hideLoading()
+                val data = response.body()?.data
+                Log.e("TAG","get data $data")
                 if (response.isSuccessful) {
 
                     if (response.body()?.status == true) {
-                        val data = response.body()?.data
+
                         val adapterTransaksi = activity?.let { AdapterTransaksi(it,
                             data as MutableList<ResponseTransaksi>, this@TransaksiFragment) }
                         rv_transaksi.layoutManager = LinearLayoutManager(activity)
@@ -82,7 +85,7 @@ class TransaksiFragment : BaseFragment(), AdapterTransaksi.OnListener {
             }
 
             override fun onFailure(call: Call<BaseResponse<List<ResponseTransaksi>>>, t: Throwable) {
-                
+                Log.e("TAG","error data ${t.message}")
                 hideLoading()
                 showErrorMessage("Gagal dapatkan data, periksa jaringan internet")
             }

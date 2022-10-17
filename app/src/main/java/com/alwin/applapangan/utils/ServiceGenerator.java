@@ -45,6 +45,9 @@ public class ServiceGenerator {
         if(!httpClient.interceptors().isEmpty()) {
             httpClient.interceptors().clear();
         }
+        httpClient.callTimeout(10, TimeUnit.SECONDS);
+        httpClient.readTimeout(10, TimeUnit.SECONDS);
+        httpClient.writeTimeout(10, TimeUnit.SECONDS);
         if (username != null && password != null) {
             String credentials = username + ":" + password;
             final String basic =

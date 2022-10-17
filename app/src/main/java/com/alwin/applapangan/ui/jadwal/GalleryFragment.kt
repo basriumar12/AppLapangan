@@ -24,7 +24,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class GalleryFragment : BaseFragment(), AdapterJadwal.OnListener {
+class GalleryFragment : BaseFragment(), AdapterJadwal.OnListener, AdapterKabKota.OnListener {
 
     lateinit var rv_jadwal: RecyclerView
     override fun onCreateView(
@@ -39,9 +39,29 @@ class GalleryFragment : BaseFragment(), AdapterJadwal.OnListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getData()
+        //getData()
+        insertData()
+    }
+    private fun insertData() {
+
+        val list = mutableListOf("KAB. GORONTALO","KAB. GORONTALO UTARA","KAB. BOALEMO","KAB. POHUWATO","KAB. BONE BOLANGO","KOTA GORONTALO")
+
+
+        val adapterLapangan = activity?.let {
+            AdapterKabKota(
+                it,
+                list as MutableList<String>, this@GalleryFragment)
+        }
+        rv_jadwal.layoutManager = GridLayoutManager(activity,2)
+        rv_jadwal.adapter = adapterLapangan
+        adapterLapangan?.notifyDataSetChanged()
+
+
+
+
     }
 
+    //tidak digunakan
     private fun getData() {
         val api = ServiceGenerator.createService(
             ApiInterface::class.java,
@@ -89,6 +109,12 @@ class GalleryFragment : BaseFragment(), AdapterJadwal.OnListener {
     override fun onClickGrup(data: ResponseJadwal) {
         startActivity(Intent(activity,DetailLapanganActivity::class.java)
             .putExtra(ResponseJadwal::class.simpleName, data)
+        )
+    }
+
+    override fun onClickGrup(data: String) {
+        startActivity(Intent(activity,DetailLapanganActivity::class.java)
+            .putExtra("Data", data)
         )
     }
 

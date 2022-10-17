@@ -9,8 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alwin.applapangan.R
 import com.alwin.applapangan.models.booking.ResponseBooking
-import com.alwin.applapangan.models.lapangan.ResponseLapangan
-import com.alwin.applapangan.ui.home.DetailShowLapanganActivity
 import com.alwin.applapangan.utils.ApiInterface
 import com.alwin.applapangan.utils.Constant
 import com.alwin.applapangan.utils.ServiceGenerator

@@ -10,9 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alwin.applapangan.R
 import com.alwin.applapangan.models.booking.ResponseBooking
 import com.driver.nyaku.utils.currencyFormatter
-import kotlinx.android.synthetic.main.item_jadwal.view.tv_date
-import kotlinx.android.synthetic.main.item_lapangan.view.tv_name
-import kotlinx.android.synthetic.main.item_lapangan.view.tv_price
 import kotlinx.android.synthetic.main.item_transaksi.view.*
 import java.util.*
 
@@ -63,12 +60,10 @@ class AdapterBooking(
             }
 
 
-            itemView.tv_name.text = "Nama lapangan : " +data.jadwal?.lapangan?.namaLapangan
-            itemView.tv_price.text = "Harga : Rp" + currencyFormatter(data.jadwal?.lapangan?.harga.toString())
-            itemView.tv_date.text = "Tanggal : ${data.jadwal?.tanggal } / jam : ${data.jadwal?.mulai } - ${data.jadwal?.selesai }"
-            itemView.tv_status.text = "Status : ${data.status}"
-           // Glide.with(itemView.context).load(data.harga).into(itemView.img_lapangan)
-
+            itemView.tv_name.text = "Nama lapangan : " + data.bookingDetails?.get(0)?.jadwal?.lapangan?.namaLapangan
+            itemView.tv_status.text = "Status : " + data?.status
+            itemView.tv_id.text = "Id Booking : " + data?.id
+            itemView.tv_price.text = "Total : " + currencyFormatter(data?.totalBayar.toString())
 
 
         }
@@ -84,7 +79,7 @@ class AdapterBooking(
                 } else {
                     val resultList = ArrayList<ResponseBooking>()
                     for (row in data) {
-                        if (row.jadwal?.lapangan?.namaLapangan?.toString()?.toLowerCase(Locale.ROOT)
+                        if (row.status.toString()?.toLowerCase(Locale.ROOT)
                                 ?.contains(charSearch.toLowerCase(Locale.ROOT))!!
                         ) {
                             resultList.add(row)

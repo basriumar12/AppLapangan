@@ -2,6 +2,7 @@ package com.alwin.applapangan.ui.login
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.alwin.applapangan.MainActivity
 import com.alwin.applapangan.R
 import com.alwin.applapangan.models.login.BodyLogin
@@ -80,6 +81,7 @@ class LoginActivity : BaseActivity() {
 
             override fun onFailure(call: Call<BaseResponse<String>>, t: Throwable) {
                 hideLoading()
+                Log.e("TAG","error ${t.message}")
                 showErrorMessage("Periksa Jaringan Internet")
             }
         })

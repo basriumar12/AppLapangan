@@ -9,7 +9,11 @@
         <entry key="app/src/main/res/drawable/edt_bg_gray.xml" value="0.225" />
         <entry key="app/src/main/res/drawable/side_nav_bar.xml" value="0.225" />
         <entry key="app/src/main/res/layout/activity_detail_lapangan.xml" value="0.20885416666666667" />
+        <entry key="app/src/main/res/layout/activity_detail_lapanganShow.xml" value="0.20885416666666667" />
         <entry key="app/src/main/res/layout/activity_detail_lapangan_booking.xml" value="0.20885416666666667" />
+        <entry key="app/src/main/res/layout/activity_detail_lapangan_from_home.xml" value="0.20885416666666667" />
+        <entry key="app/src/main/res/layout/activity_detail_lapangan_from_jadwal.xml" value="0.20885416666666667" />
+        <entry key="app/src/main/res/layout/activity_detail_lapangan_show.xml" value="0.20885416666666667" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.20885416666666667" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.20885416666666667" />
@@ -19,7 +23,9 @@
         <entry key="app/src/main/res/layout/fragment_gallery.xml" value="0.20885416666666667" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.20885416666666667" />
         <entry key="app/src/main/res/layout/fragment_slideshow.xml" value="0.20885416666666667" />
+        <entry key="app/src/main/res/layout/item_gedung.xml" value="0.20885416666666667" />
         <entry key="app/src/main/res/layout/item_jadwal.xml" value="0.2078125" />
+        <entry key="app/src/main/res/layout/item_jadwal_for_booking.xml" value="0.20885416666666667" />
         <entry key="app/src/main/res/layout/item_lapangan.xml" value="0.2078125" />
         <entry key="app/src/main/res/layout/item_transaksi.xml" value="0.2078125" />
         <entry key="app/src/main/res/layout/main_header.xml" value="0.20885416666666667" />

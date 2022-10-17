@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alwin.applapangan.R
 import com.alwin.applapangan.models.transaksi.ResponseTransaksi
 import com.driver.nyaku.utils.currencyFormatter
+import com.driver.nyaku.utils.invisible
 import kotlinx.android.synthetic.main.item_jadwal.view.tv_date
 import kotlinx.android.synthetic.main.item_lapangan.view.tv_name
 import kotlinx.android.synthetic.main.item_lapangan.view.tv_price
@@ -65,6 +66,8 @@ class AdapterTransaksi(
 
             itemView.tv_name.text = "Booking Id : ${data.bookingId}"
             itemView.tv_status.text = "Status Booking : ${data.status}"
+            itemView.tv_price.invisible()
+            itemView.tv_id.invisible()
 
 
         }

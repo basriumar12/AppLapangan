@@ -3,6 +3,7 @@ package com.alwin.applapangan
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.core.content.IntentCompat
 import androidx.navigation.findNavController
@@ -57,7 +58,7 @@ class MainActivity : BaseActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_gallery,R.id.nav_gedung, R.id.nav_slideshow, R.id.nav_transaksi
+                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.nav_transaksi
             ), drawer_layout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -108,6 +109,17 @@ class MainActivity : BaseActivity() {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id: Int = item.getItemId()
+        if (id == R.id.logout) {
+            finish()
+            Prefuser().setToken(null)
+            startActivity(Intent(this,LoginActivity::class.java))
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -4,7 +4,15 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_margin="@dimen/size_16dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content" xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.core.widget.NestedScrollView
+            android:orientation="vertical"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_margin="@dimen/size_16dp"
+            android:layout_height="wrap_content" xmlns:tools="http://schemas.android.com/tools">
+
     <androidx.appcompat.widget.LinearLayoutCompat
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="vertical"
@@ -29,16 +37,33 @@
                 android:layout_height="wrap_content"/>
         <TextView
                 android:textAlignment="center"
-                android:id="@+id/tv_price"
-                android:textColor="@color/blue_primary"
+                android:id="@+id/tv_status"
+                android:textColor="@color/green"
                 android:text="loading.."
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+        <TextView
+                android:textAlignment="center"
+                android:id="@+id/tv_price_total"
+                android:textColor="@color/red"
+                android:text="loading.."
+                android:textStyle="bold"
+                android:textSize="@dimen/size_16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
         <TextView
+
                 android:id="@+id/tv_date"
-                android:text="loading.."
+                android:text="Jadwal :"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_jadwal"
+                tools:listitem="@layout/item_jadwal_for_booking"
+                android:layout_marginTop="@dimen/size_16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         <TextView
@@ -60,7 +85,7 @@
 
                 android:textStyle="italic"
                 android:layout_marginTop="@dimen/size_16dp"
-                android:text="Catatan : Jumlah Bayar di upload sesuai dengan nominal harga lapangan, Kirim ke Rekening BANK BRI 0913910 A.N Alwin Ibrahinm "
+                android:text="Catatan : Jumlah Bayar di upload sesuai dengan nominal total harga lapangan yang di booking, Kirim ke Rekening BANK BRI 0913910 A.N Alwin Ibrahinm "
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
@@ -70,7 +95,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
-
+    </androidx.core.widget.NestedScrollView>
     <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_booking"
             android:text="Upload Bukti Bayar"

@@ -12,10 +12,9 @@ import com.alwin.applapangan.models.register.BodyRegister;
 import com.alwin.applapangan.models.transaksi.ResponseTransaksi;
 import com.driver.nyaku.models.BaseResponse;
 import com.driver.nyaku.models.BaseResponseOther;
+import okhttp3.MultipartBody;
 import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
+import retrofit2.http.*;
 
 import java.util.List;
 
@@ -41,14 +40,22 @@ public interface ApiInterface {
     @GET("booking")
     Call<BaseResponse<List<ResponseBooking>>> getbooking();
 
+
     @GET("pembayaran")
     Call<BaseResponse<List<ResponseBooking>>> getPembayaran();
 
     @GET("gedung")
+    Call<BaseResponse<List<ResponseGedungItem>>> getGedung(@Query("kabkota") String kabKota);
+
+   @GET("gedung")
     Call<BaseResponse<List<ResponseGedungItem>>> getGedung();
 
-    @GET("transaksi")
+    @GET("pembayaran")
     Call<BaseResponse<List<ResponseTransaksi>>> getTransaksi();
+
+        @Multipart
+    @POST("pembayaran")
+    Call<BaseResponseOther> uploadFIle(@Path("booking_id") String id, @Part MultipartBody.Part bukti_bayar);
     //
 //    @FormUrlEncoded
 //    @PUT("users/logout")
