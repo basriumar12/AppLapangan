@@ -13,6 +13,7 @@ import com.alwin.applapangan.models.transaksi.ResponseTransaksi;
 import com.driver.nyaku.models.BaseResponse;
 import com.driver.nyaku.models.BaseResponseOther;
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.*;
 
@@ -47,15 +48,15 @@ public interface ApiInterface {
     @GET("gedung")
     Call<BaseResponse<List<ResponseGedungItem>>> getGedung(@Query("kabkota") String kabKota);
 
-   @GET("gedung")
+    @GET("gedung")
     Call<BaseResponse<List<ResponseGedungItem>>> getGedung();
 
     @GET("pembayaran")
     Call<BaseResponse<List<ResponseTransaksi>>> getTransaksi();
 
-        @Multipart
+    @Multipart
     @POST("pembayaran")
-    Call<BaseResponseOther> uploadFIle(@Path("booking_id") String id, @Part MultipartBody.Part bukti_bayar);
+    Call<BaseResponseOther> uploadFIle(@Part("booking_id") RequestBody id, @Part MultipartBody.Part bukti_bayar);
     //
 //    @FormUrlEncoded
 //    @PUT("users/logout")

@@ -106,7 +106,7 @@ class DetailShowLapanganBookingActivity : BaseActivity(), AdapterJadwalBooking.O
         }
         btn_booking.setOnClickListener {
             if (EasyPermissions.hasPermissions(this, android.Manifest.permission.CAMERA)) {
-                easyImage.openCameraForImage(this)
+                easyImage.openGallery(this)
 
 
             } else {
@@ -149,7 +149,7 @@ class DetailShowLapanganBookingActivity : BaseActivity(), AdapterJadwalBooking.O
                 override fun onMediaFilesPicked(imageFiles: Array<MediaFile>, source: MediaSource) {
                     val file = File(imageFiles.get(0).file.toString())
                    // Glide.with(this@DetailShowLapanganBookingActivity).load(file).into(img_bukti)
-                    myFile = file
+                    myFile = File(imageFiles.get(0).file.toString())
                     imageFiles.let {
                         //myFile = File(it.get(0).file.toString())
                     uploadPhoto()
@@ -164,33 +164,37 @@ class DetailShowLapanganBookingActivity : BaseActivity(), AdapterJadwalBooking.O
     }
 
     private fun uploadPhoto() {
-
-        val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), myFile)
-
-        val body = MultipartBody.Part.createFormData("bukti_bayar", myFile?.name, requestFile)
-
-
-        val bookingId: RequestBody = RequestBody.create(
-            MediaType.parse("text/plain"),
-            idBooking
-                .toString()
-        )
-
-        val api = ServiceGenerator.createService(
-            ApiInterface::class.java,
-            Prefuser().getToken(),
-            Constant.PASS
-        )
-        showLoading(this)
-        Log.e("TAG","data body $bookingId ${body.body()}")
-//        api.uploadFIle(bookingId.toString(),body)
+//
+//        var multipartImage: MultipartBody.Part? = null
+//         val requestFile = RequestBody.create(MediaType.parse("image/*"), myFile?.path)
+//
+//        val body = MultipartBody.Part.createFormData("bukti_bayar", myFile?.name, requestFile)
+//
+//
+//        val bookingId: RequestBody = RequestBody.create(
+//            MediaType.parse("text/plain"),
+//            idBooking
+//
+//        )
+//
+//        val api = ServiceGenerator.createService(
+//            ApiInterface::class.java,
+//            Prefuser().getToken(),
+//            Constant.PASS
+//        )
+//        showLoading(this)
+//        Log.e("TAG","data body $bookingId ${body.body()}")
+//        api.uploadFIle(bookingId,body)
 //            .enqueue(object : Callback<BaseResponseOther>{
 //                override fun onResponse(call: Call<BaseResponseOther>, response: Response<BaseResponseOther>) {
 //                        hideLoading()
 //                    if (response.isSuccessful){
 //                        showLongSuccessMessage("Berhasil Upload")
 //                        finish()
+//                    } else {
+//                        showInfoMessage("Gagal Upload")
 //                    }
+//                    Log.e("TAG"," ${response.code()} ${response.isSuccessful} ${response.body()?.message}")
 //                }
 //
 //                override fun onFailure(call: Call<BaseResponseOther>, t: Throwable) {
@@ -199,11 +203,16 @@ class DetailShowLapanganBookingActivity : BaseActivity(), AdapterJadwalBooking.O
 //                    Log.e("TAG","gagal upload ${t.message}")
 //                }
 //            })
+//
+//        Log.e("TAG","$idBooking ${myFile?.name}")
+       uploadFastNet()
+    }
 
-        Log.e("TAG","$idBooking ${myFile?.name}")
+    private fun uploadFastNet() {
+        showLoading(this)
         val file = myFile?.path
         AndroidNetworking.upload("${AppConstant.BASE_URL}pembayaran")
-            .addMultipartFile("bukti_bayar", File(file))
+            .addMultipartFile("bukti_bayar", myFile)
             .addMultipartParameter("booking_id",idBooking)
             .addHeaders("Authorization", "Bearer ${Prefuser().getToken()}")
             .setTag("uploadTest")
@@ -226,9 +235,9 @@ class DetailShowLapanganBookingActivity : BaseActivity(), AdapterJadwalBooking.O
                     val jsonObject = JSONObject(response.toString())
 
                     val msg = jsonObject.getString("message").toString()
-                  //  val data = jsonObject.getString("data").toString()
+                    //  val data = jsonObject.getString("data").toString()
 //                    val file = JSONObject(data.toString()).getString("file")
-                    val datafileImage = JSONObject(file.toString()).getString("file_url")
+//                    val datafileImage = JSONObject(file.toString()).getString("file_url")
 
 
                     if (msg.equals("Pembayaran created")) {
