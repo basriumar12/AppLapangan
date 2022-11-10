@@ -91,6 +91,7 @@
         <androidx.appcompat.widget.AppCompatButton
                 android:layout_marginTop="@dimen/size_16dp"
                 android:id="@+id/btn_cancel"
+                android:visibility="gone"
                 android:text="Batalkan Booking"
                 android:textColor="@color/white"
                 android:background="@color/red"
