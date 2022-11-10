@@ -9,7 +9,10 @@ import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.alwin.applapangan.R
 import com.alwin.applapangan.models.booking.BookingDetailsItem
+import com.driver.nyaku.utils.invisible
 import kotlinx.android.synthetic.main.item_jadwal.view.*
+import kotlinx.android.synthetic.main.item_jadwal.view.tv_date
+import kotlinx.android.synthetic.main.item_jadwal_for_booking.view.*
 import java.util.*
 
 class AdapterJadwalBooking(
@@ -58,9 +61,10 @@ class AdapterJadwalBooking(
                 listiner.onClickGrup(data)
             }
 
-
+            if (data.jadwal?.status == false)
             itemView.tv_date.text = "Jadwal : ${data.jadwal?.tanggal} / jam : ${data?.jadwal?.mulai} - ${data.jadwal?.selesai} "
-
+            else
+                itemView.invisible()
         }
     }
 

@@ -15,6 +15,7 @@ import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import com.bumptech.glide.request.RequestOptions
 import com.driver.nyaku.utils.currencyFormatter
+import com.driver.nyaku.utils.invisible
 import com.gorontalodigital.preference.Prefuser
 import kotlinx.android.synthetic.main.item_jadwal_for_booking.view.*
 import java.util.*
@@ -67,10 +68,10 @@ class AdapterJadwalForBooking(
 
                 true
             }
-
-            itemView.tv_date.text = "Jadwal : ${data.tanggal} / jam : ${data?.mulai} - ${data.selesai} "
-
-
+            if (data.status == false)
+                itemView.tv_date.text = "Jadwal : ${data.tanggal} / jam : ${data?.mulai} - ${data.selesai} "
+            else
+                itemView.invisible()
 
 
 
