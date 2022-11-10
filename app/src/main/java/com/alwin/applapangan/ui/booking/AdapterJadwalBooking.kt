@@ -61,10 +61,9 @@ class AdapterJadwalBooking(
                 listiner.onClickGrup(data)
             }
 
-            if (data.jadwal?.status == false)
+
             itemView.tv_date.text = "Jadwal : ${data.jadwal?.tanggal} / jam : ${data?.jadwal?.mulai} - ${data.jadwal?.selesai} "
-            else
-                itemView.invisible()
+
         }
     }
 
