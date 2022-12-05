@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.alwin.applapangan.R
 import com.alwin.applapangan.models.gedung.JadwalsItem
@@ -48,12 +49,12 @@ class AdapterJadwalForBooking(
         val datas = dataFilterList[position]
         holder.bindView(datas, itemListiner)
         holder.itemView.tv_status.visible()
-        if (datas.status.toString().equals("1")){
+        if (datas.status.toString().equals("1")) {
             holder.itemView.tv_status.text = "Full Booking"
         } else {
             holder.itemView.tv_status.text = "Belum di Booking"
         }
-        when(datas.kodeHari?.toInt()){
+        when (datas.kodeHari?.toInt()) {
             1 -> {
                 holder.itemView.tv_date.text = " Hari Senin"
             }
@@ -83,7 +84,12 @@ class AdapterJadwalForBooking(
 
         fun bindView(data: JadwalsItem, listiner: OnListener) {
 
-            itemView.setOnClickListener { listiner.onClickGrup(data) }
+            itemView.setOnClickListener {
+                if (data.status.toString().equals("1"))
+                    Toast.makeText(itemView.context, "Full Boking", Toast.LENGTH_LONG).show()
+                else
+                    listiner.onClickGrup(data)
+            }
             //hide
 //            itemView.setOnLongClickListener {
 //                listiner.onClickGrup(data)
@@ -91,9 +97,6 @@ class AdapterJadwalForBooking(
 //
 //                true
 //            }
-
-
-
 
 
         }

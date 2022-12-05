@@ -119,15 +119,18 @@ class DetailJadwalActivity : BaseActivity(), AdapterDetailJadwalForBooking.OnLis
 
                 hideLoading()
                 if (response.isSuccessful) {
-                    if (response.body()?.status?.equals(true) == true)
+                    if (response.body()?.status?.equals(true) == true) {
                         finish()
-                    showLongSuccessMessage("Sukses Booking")
-                    NotificationManager(this@DetailJadwalActivity).displayNotification(
-                        "Berhasil Booking",
-                        "Selamat anda berhasil booking jadwal",
-                        "",
-                        ""
-                    )
+                        showLongSuccessMessage("Sukses Booking")
+                        NotificationManager(this@DetailJadwalActivity).displayNotification(
+                            "Berhasil Booking",
+                            "Selamat anda berhasil booking jadwal",
+                            "",
+                            ""
+                        )
+                    }  else {
+                        showInfoMessage("Gagal di Booking")
+                    }
                 } else {
                     val jObjError = JSONObject(response.errorBody()!!.string())
                     showErrorMessage("Gagal,${jObjError.getString("message")}")
@@ -150,7 +153,7 @@ class DetailJadwalActivity : BaseActivity(), AdapterDetailJadwalForBooking.OnLis
         )
         showLoading(this)
 
-        val body = BodyCekJadwal(jamSelesai.toString(), data?.id.toString(), jamMulai.toString())
+        val body = BodyCekJadwal(jamSelesai.toString()+":00", data?.id.toString(), jamMulai.toString()+":00")
         api.postCekJadwal(body).enqueue(object : Callback<BaseResponseOther> {
             override fun onResponse(call: Call<BaseResponseOther>, response: Response<BaseResponseOther>) {
                 hideLoading()
