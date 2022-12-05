@@ -9,8 +9,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.alwin.applapangan.R
 import com.alwin.applapangan.models.booking.BookingDetailsItem
 import com.alwin.applapangan.models.booking.ResponseBooking
-import com.alwin.applapangan.models.gedung.JadwalsItem
-import com.alwin.applapangan.ui.jadwal.AdapterJadwalForBooking
 import com.alwin.applapangan.utils.ApiInterface
 import com.alwin.applapangan.utils.AppConstant
 import com.alwin.applapangan.utils.Constant
@@ -39,10 +37,6 @@ import kotlinx.android.synthetic.main.activity_detail_lapangan_booking.btn_booki
 import kotlinx.android.synthetic.main.activity_detail_lapangan_booking.img_lapangan
 import kotlinx.android.synthetic.main.activity_detail_lapangan_booking.rv_jadwal
 import kotlinx.android.synthetic.main.activity_detail_lapangan_booking.tv_name
-import kotlinx.android.synthetic.main.activity_detail_lapangan_from_jadwal.*
-import okhttp3.MediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import org.json.JSONObject
 import pl.aprilapps.easyphotopicker.*
 import pub.devrel.easypermissions.EasyPermissions
@@ -76,7 +70,7 @@ class DetailShowLapanganBookingActivity : BaseActivity(), AdapterJadwalBooking.O
             "Lokasi Lapangan berada pada gedung : ${product?.bookingDetails?.get(0)?.jadwal?.lapangan?.gedung?.namaGedung} - Dapat menghubungi pemilik :  ${product?.bookingDetails?.get(0)?.jadwal?.lapangan?.gedung?.kontakPemilik}"
         tv_deskripsi.text =
             "Alamat Lapangan : ${product?.bookingDetails?.get(0)?.jadwal?.lapangan?.gedung?.alamat} - ${product?.bookingDetails?.get(0)?.jadwal?.lapangan?.gedung?.provinsi}, ${product?.bookingDetails?.get(0)?.jadwal?.lapangan?.gedung?.kabupaten}, ${product?.bookingDetails?.get(0)?.jadwal?.lapangan?.gedung?.kecamatan}, Desa ${product?.bookingDetails?.get(0)?.jadwal?.lapangan?.gedung?.desa}"
-
+        tv_rekening.text = "Catatan : Pembayaran melalui Nama BANK : ${product?.bookingDetails?.get(0)?.jadwal?.lapangan?.gedung?.rekening?.namaBank} No rekening : ${product?.bookingDetails?.get(0)?.jadwal?.lapangan?.gedung?.rekening?.noRekening} Atas Nama : ${product?.bookingDetails?.get(0)?.jadwal?.lapangan?.gedung?.rekening?.namaPemilikAkun}"
         val glideUrl = GlideUrl(
             "${AppConstant.BASE_URL}show-image?image=${product?.bookingDetails?.get(0)?.jadwal?.lapangan?.gambar}",
             LazyHeaders.Builder()
@@ -117,7 +111,37 @@ class DetailShowLapanganBookingActivity : BaseActivity(), AdapterJadwalBooking.O
             }
         }
 
+        btn_cancel.setOnClickListener {
+            cancelBooking()
+        }
 
+    }
+
+    private fun cancelBooking() {
+        val api = ServiceGenerator.createService(
+            ApiInterface::class.java,
+            Prefuser().getToken(),
+            Constant.PASS
+        )
+       showLoading(this)
+        api.cancelBooking(idBooking).enqueue(object : Callback<BaseResponseOther>{
+            override fun onResponse(call: Call<BaseResponseOther>, response: Response<BaseResponseOther>) {
+                hideLoading()
+                if (response.isSuccessful){
+                        showLongSuccessMessage("Berhasil Cancel Booking")
+                        finish()
+                    } else {
+                    val jObjError = JSONObject(response.errorBody()!!.string())
+                    showErrorMessage("Gagal,${jObjError.getString("message")}")
+                    }
+
+            }
+
+            override fun onFailure(call: Call<BaseResponseOther>, t: Throwable) {
+               hideLoading()
+                showErrorMessage("Gagal, Periksa Jaringan")
+            }
+        })
     }
 
     private fun permissionInit() {

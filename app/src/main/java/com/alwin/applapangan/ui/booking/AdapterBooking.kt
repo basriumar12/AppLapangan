@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.alwin.applapangan.R
 import com.alwin.applapangan.models.booking.ResponseBooking
 import com.driver.nyaku.utils.currencyFormatter
+import com.driver.nyaku.utils.invisible
 import kotlinx.android.synthetic.main.item_transaksi.view.*
 import java.util.*
 
@@ -56,11 +58,17 @@ class AdapterBooking(
         fun bindView(data: ResponseBooking, listiner: OnListener) {
 
             itemView.setOnClickListener {
-                listiner.onClickGrup(data)
+                if (data.bookingDetails?.isNotEmpty() == true)
+                    listiner.onClickGrup(data)
+                else
+                    Toast.makeText(itemView.context, "Data details koosong", Toast.LENGTH_LONG).show()
             }
 
-
-            itemView.tv_name.text = "Nama lapangan : " + data.bookingDetails?.get(0)?.jadwal?.lapangan?.namaLapangan
+            if (data.bookingDetails?.isNotEmpty() == true) {
+                itemView.tv_name.text = "Nama lapangan : " + data.bookingDetails?.get(0)?.jadwal?.lapangan?.namaLapangan
+            } else {
+                itemView.tv_name.invisible()
+            }
             itemView.tv_status.text = "Status : " + data?.status
             itemView.tv_id.text = "Id Booking : " + data?.id
             itemView.tv_price.text = "Total : " + currencyFormatter(data?.totalBayar.toString())

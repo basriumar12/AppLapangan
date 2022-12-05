@@ -6,7 +6,8 @@ package com.alwin.applapangan.utils;
 
 public class AppConstant {
 
-    public static String BASE_URL = "https://simplb.herokuapp.com/api/";
+    public static String BASE_URL = "https://simplb.siskripsi.site/api/";
+    //public static String BASE_URL = "https://simplb.herokuapp.com/api/";
    // public static String BASE_URL = "https://dev-api.nuku-sistem.com/";
     public static String IMAGE_URL = "api/v1/file/stream?file_url=";
 

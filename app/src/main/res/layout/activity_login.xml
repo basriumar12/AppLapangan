@@ -113,13 +113,25 @@
             android:layout_marginBottom="@dimen/size_16dp"
     >
 
+      <androidx.appcompat.widget.LinearLayoutCompat
+              android:gravity="center"
+              android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content">
         <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_daftar"
+
                 android:text="@string/label_belum_punya_akun_sini_daftar_dulu"
                 android:textSize="@dimen/size_16sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-
+          <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_daftar"
+                android:textStyle="bold"
+                android:textColor="@color/biru"
+                android:text="@string/label_belum_punya_akun_sini_daftar_dulu_"
+                android:textSize="@dimen/size_16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+      </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 </RelativeLayout>

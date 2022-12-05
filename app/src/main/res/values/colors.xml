@@ -16,5 +16,6 @@
     <color name="gray_bg">#F2F2F2</color>
     <color name="red">#F44336</color>
     <color name="gray_text">#858181</color>
+    <color name="biru">#2196F3</color>
     <color name="grey_dark">#262626</color>
 </resources>

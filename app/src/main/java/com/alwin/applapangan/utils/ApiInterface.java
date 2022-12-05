@@ -2,8 +2,10 @@ package com.alwin.applapangan.utils;
 
 
 import com.alwin.applapangan.models.booking.BodyBooking;
+import com.alwin.applapangan.models.booking.BodyBookingNew;
 import com.alwin.applapangan.models.booking.ResponseBooking;
 import com.alwin.applapangan.models.gedung.ResponseGedungItem;
+import com.alwin.applapangan.models.jadwal.BodyCekJadwal;
 import com.alwin.applapangan.models.jadwal.ResponseJadwal;
 import com.alwin.applapangan.models.lapangan.ResponseLapangan;
 import com.alwin.applapangan.models.login.BodyLogin;
@@ -29,6 +31,12 @@ public interface ApiInterface {
     @POST("booking")
     Call<BaseResponseOther> postBooking(@Body BodyBooking data);
 
+     @POST("booking")
+    Call<BaseResponseOther> postBookingNew(@Body BodyBookingNew data);
+
+    @POST("cek-jadwal")
+    Call<BaseResponseOther> postCekJadwal(@Body BodyCekJadwal data);
+
     @GET("profile")
     Call<BaseResponse<ResponseProfile>> getProfile();
 
@@ -41,6 +49,8 @@ public interface ApiInterface {
     @GET("booking")
     Call<BaseResponse<List<ResponseBooking>>> getbooking();
 
+    @DELETE("booking/{id}")
+    Call<BaseResponseOther> cancelBooking(@Path("id") String id);
 
     @GET("pembayaran")
     Call<BaseResponse<List<ResponseBooking>>> getPembayaran();

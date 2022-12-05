@@ -49,7 +49,32 @@ class AdapterJadwalBooking(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val datas = dataFilterList[position]
         holder.bindView(datas, itemListiner)
-
+        var hari = ""
+        when(datas.kode_hari?.toInt()){
+            1 -> {
+               hari = " Hari Senin"
+            }
+            2 -> {
+               hari = " Hari Selasa"
+            }
+            3 -> {
+               hari = " Hari Rabu"
+            }
+            4 -> {
+               hari = " Hari Kamis"
+            }
+            5 -> {
+               hari = " Hari Jumat"
+            }
+            6 -> {
+               hari = " Hari Sabtu"
+            }
+            7 -> {
+               hari = " Hari Minggu"
+            }
+        }
+        holder.itemView.tv_date.text = "Jadwal : Hari $hari, jam : ${datas.dari_jam} - ${datas.sampai_jam} "
+        
     }
 
     class ViewHolder(itemView: View) :
@@ -62,7 +87,7 @@ class AdapterJadwalBooking(
             }
 
 
-            itemView.tv_date.text = "Jadwal : ${data.jadwal?.tanggal} / jam : ${data?.jadwal?.mulai} - ${data.jadwal?.selesai} "
+
 
         }
     }

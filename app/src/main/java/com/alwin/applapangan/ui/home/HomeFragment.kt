@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alwin.applapangan.R
 import com.alwin.applapangan.models.gedung.ResponseGedungItem
+import com.alwin.applapangan.ui.jadwal.DetailShowGedungLapanganFromJadwalActivity
 import com.alwin.applapangan.utils.ApiInterface
 import com.alwin.applapangan.utils.Constant
 import com.alwin.applapangan.utils.ServiceGenerator
@@ -140,7 +141,7 @@ class HomeFragment : BaseFragment(), AdapterGedung.OnListener {
 
 
     override fun onClickGrup(data: ResponseGedungItem) {
-        startActivity(Intent(activity, DetailShowGedungLapanganActivity::class.java)
+        startActivity(Intent(activity, DetailShowGedungLapanganFromJadwalActivity::class.java)
             .putExtra(ResponseGedungItem::class.simpleName, data)
         )
     }

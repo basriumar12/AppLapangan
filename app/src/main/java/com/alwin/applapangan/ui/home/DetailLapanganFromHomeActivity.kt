@@ -28,7 +28,7 @@ class DetailLapanganFromHomeActivity : BaseActivity() {
 
         tv_name.text = product?.namaLapangan
         tv_price.text = "Harga ${product?.harga} / Jam"
-        tv_open.text = "Waktu Buka  ${product?.waktuBuka} - Waktu Tutup ${product?.waktuTutup}"
+       // tv_open.text = "Waktu Buka  ${product?.jadwals?.mulai} - Waktu Tutup ${product?.waktuTutup}"
         val glideUrl = GlideUrl(
             "${AppConstant.BASE_URL}show-image?image=${product?.gambar}",
             LazyHeaders.Builder()

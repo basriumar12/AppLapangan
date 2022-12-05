@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_register.edt_email
 import kotlinx.android.synthetic.main.activity_register.edt_password
+import kotlinx.android.synthetic.main.main_header.*
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -31,6 +32,9 @@ class RegisterActivity : BaseActivity() {
             intentTo(LoginActivity::class.java)
             finish()
         }
+
+        img_back.setOnClickListener {   intentTo(LoginActivity::class.java)
+            finish() }
 
         btn_register.setOnClickListener { 
             if (edt_name.text.toString().isNullOrEmpty()){
@@ -73,12 +77,12 @@ class RegisterActivity : BaseActivity() {
 
                     } else {
                         val jObjError = JSONObject(response.errorBody()!!.string())
-                        showErrorMessage("Gagal Login,${jObjError.getString("message")}")
+                        showErrorMessage("Gagal Register,${jObjError.getString("message")}")
 
                     }
                 } else {
                     val jObjError = JSONObject(response.errorBody()!!.string())
-                    showErrorMessage("Gagal Login,${jObjError.getString("message")}")
+                    showErrorMessage("Gagal Register,${jObjError.getString("message")}")
 
                 }
             }

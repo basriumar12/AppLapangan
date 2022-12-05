@@ -2,6 +2,7 @@ package com.alwin.applapangan.models.booking
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.alwin.applapangan.models.gedung.ResponseRekening
 import com.google.gson.annotations.SerializedName
 
 data class ResponseBooking(
@@ -180,7 +181,9 @@ data class Gedung(
 	val namaGedung: String? = null,
 
 	@field:SerializedName("alamat")
-	val alamat: String? = null
+	val alamat: String? = null,
+	@field:SerializedName("rekening")
+	val rekening: ResponseRekening? = null,
 ) : Parcelable {
 	constructor(parcel: Parcel) : this(
 		parcel.readString(),
@@ -193,8 +196,10 @@ data class Gedung(
 		parcel.readValue(Int::class.java.classLoader) as? Int,
 		parcel.readString(),
 		parcel.readString(),
-		parcel.readString()
-	) {
+		parcel.readString(),
+		parcel.readValue(ResponseRekening::class.java.classLoader) as? ResponseRekening
+
+		) {
 	}
 
 	override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -209,6 +214,7 @@ data class Gedung(
 		parcel.writeString(kabupaten)
 		parcel.writeString(namaGedung)
 		parcel.writeString(alamat)
+		parcel.writeValue(rekening)
 	}
 
 	override fun describeContents(): Int {
@@ -304,6 +310,12 @@ data class BookingDetailsItem(
 
 	@field:SerializedName("booking_id")
 	val bookingId: String? = null,
+	@field:SerializedName("kode_hari")
+	val kode_hari: String? = null,
+	@field:SerializedName("dari_jam")
+	val dari_jam: String? = null,
+	@field:SerializedName("sampai_jam")
+	val sampai_jam: String? = null,
 
 	@field:SerializedName("jadwal")
 	val jadwal: Jadwal? = null,
@@ -322,6 +334,9 @@ data class BookingDetailsItem(
 ) : Parcelable {
 	constructor(parcel: Parcel) : this(
 		parcel.readString(),
+		parcel.readString(),
+		parcel.readString(),
+		parcel.readString(),
 		parcel.readParcelable(Jadwal::class.java.classLoader),
 		parcel.readValue(Int::class.java.classLoader) as? Int,
 		parcel.readString(),
@@ -332,6 +347,9 @@ data class BookingDetailsItem(
 
 	override fun writeToParcel(parcel: Parcel, flags: Int) {
 		parcel.writeString(bookingId)
+		parcel.writeString(kode_hari)
+		parcel.writeString(dari_jam)
+		parcel.writeString(sampai_jam)
 		parcel.writeParcelable(jadwal, flags)
 		parcel.writeValue(jadwalId)
 		parcel.writeString(updatedAt)

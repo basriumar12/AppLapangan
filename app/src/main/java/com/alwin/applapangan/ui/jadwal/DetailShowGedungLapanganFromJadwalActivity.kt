@@ -8,6 +8,7 @@ import com.alwin.applapangan.R
 import com.alwin.applapangan.models.gedung.LapangansItem
 import com.alwin.applapangan.models.gedung.ResponseGedungItem
 import com.alwin.applapangan.ui.home.AdapterLapanganDetail
+import com.alwin.applapangan.ui.jadwal.detail_lapangan.DetailLapanganFromJadwalActivity
 import com.alwin.applapangan.utils.AppConstant
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.model.GlideUrl
@@ -15,7 +16,6 @@ import com.bumptech.glide.load.model.LazyHeaders
 import com.bumptech.glide.request.RequestOptions
 import com.driver.nyaku.ui.BaseActivity
 import com.gorontalodigital.preference.Prefuser
-import kotlinx.android.synthetic.main.activity_detail_lapangan_from_home.*
 import kotlinx.android.synthetic.main.activity_detail_lapangan_show.*
 import kotlinx.android.synthetic.main.activity_detail_lapangan_show.img_lapangan
 import kotlinx.android.synthetic.main.activity_detail_lapangan_show.tv_name

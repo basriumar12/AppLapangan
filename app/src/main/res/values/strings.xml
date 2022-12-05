@@ -16,9 +16,12 @@
     <string name="label_email">email</string>
     <string name="password">password</string>
     <string name="label_lupa_password">lupa password</string>
-    <string name="label_belum_punya_akun_sini_daftar_dulu">Belum punya akun? daftar dulu</string>
+    <string name="label_belum_punya_akun_sini_daftar_dulu">Belum punya akun? </string>
+    <string name="label_belum_punya_akun_sini_daftar_dulu_">Daftar Dulu!</string>
     <string name="label_login">Login</string>
     <string name="label_register">Register</string>
     <string name="label_sudah_punya_akun_silahkan_login">Sudah punya Akun? Silahkan Login.</string>
     <string name="logout">logout</string>
+    <string name="label_jam_mulai">Jam Mulai</string>
+    <string name="label_jam_selesai">Jam Selesai</string>
 </resources>
