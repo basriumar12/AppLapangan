@@ -26,6 +26,7 @@ import com.driver.nyaku.models.BaseResponseOther
 import com.driver.nyaku.ui.BaseActivity
 import com.driver.nyaku.utils.currencyFormatter
 import com.driver.nyaku.utils.invisible
+import com.driver.nyaku.utils.visible
 import com.gorontalodigital.preference.Prefuser
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
@@ -95,9 +96,7 @@ class DetailShowLapanganBookingActivity : BaseActivity(), AdapterJadwalBooking.O
 
             .into(img_lapangan)
 
-        if (product?.status.equals("pembayaran terverifikasi")){
-            btn_booking.invisible()
-        }
+
         btn_booking.setOnClickListener {
             if (EasyPermissions.hasPermissions(this, android.Manifest.permission.CAMERA)) {
                 easyImage.openGallery(this)
@@ -113,6 +112,14 @@ class DetailShowLapanganBookingActivity : BaseActivity(), AdapterJadwalBooking.O
 
         btn_cancel.setOnClickListener {
             cancelBooking()
+        }
+        if (product?.status.equals("pembayaran terverifikasi")){
+            btn_booking.invisible()
+        }
+        else if (product?.status.equals("batal")){
+            btn_booking.invisible()
+            tv_status_booking.visible()
+
         }
 
     }

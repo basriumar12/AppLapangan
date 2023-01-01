@@ -1,89 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout
-
-        android:orientation="vertical"
+<androidx.core.widget.NestedScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_margin="@dimen/size_16dp"
         android:layout_height="wrap_content" xmlns:tools="http://schemas.android.com/tools">
     <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/parent_data"
             android:orientation="vertical"
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-
-        <ImageView
-                android:id="@+id/img_lapangan"
-                android:src="@drawable/img_splash1"
+            android:layout_margin="@dimen/size_16dp"
+            android:layout_height="wrap_content" xmlns:tools="http://schemas.android.com/tools">
+        <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/parent_data"
+                android:orientation="vertical"
+                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"/>
+                android:layout_height="wrap_content">
+
+
+            <ImageView
+                    android:id="@+id/img_lapangan"
+                    android:src="@drawable/img_splash1"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"/>
+
+            <TextView
+                    android:layout_marginTop="@dimen/size_10dp"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/size_16sp"
+                    android:textAlignment="center"
+                    android:id="@+id/tv_name"
+                    android:text="loading.."
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            <TextView
+                    android:textAlignment="center"
+                    android:id="@+id/tv_price"
+                    android:textColor="@color/blue_primary"
+                    android:text="loading.."
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            <TextView
+                    android:textAlignment="center"
+                    android:id="@+id/tv_open"
+                    android:textColor="@color/green"
+                    android:text="loading.."
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            <TextView
+                    android:textAlignment="center"
+                    android:id="@+id/tv_jenis_lapangan"
+                    android:textColor="@color/green"
+                    android:text="loading.."
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            <TextView
+                    android:textAlignment="center"
+                    android:id="@+id/tv_wc"
+                    android:textColor="@color/green"
+                    android:text="loading.."
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_below="@id/parent_data"
+                android:orientation="vertical"
+                android:layout_marginBottom="@dimen/size_4dp"
+                android:layout_above="@+id/btn_booking"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <View
+                    android:background="@color/gray"
+                    android:layout_marginTop="@dimen/_6dp"
+                    android:layout_width="match_parent" android:layout_height="1dp"/>
+            <TextView
+                    android:layout_marginTop="@dimen/_6dp"
+                    android:textColor="@color/black"
+                    android:text="Daftar Jadwal"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/size_16sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_jadwal"
+                    tools:listitem="@layout/item_jadwal_for_booking"
+                    android:layout_marginTop="@dimen/size_16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <TextView
-                android:layout_marginTop="@dimen/size_10dp"
+                android:gravity="center"
+                android:background="@color/biru"
+                android:id="@+id/tv_jadwal"
                 android:textStyle="bold"
+                android:textSize="@dimen/size_18sp"
+                android:hint="Pilih jadwal"
+                android:layout_marginTop="@dimen/size_16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        <TextView
+
+                android:gravity="center"
+                android:background="@color/biru"
+                android:id="@+id/tv_tanggal"
+                android:textStyle="bold"
+                android:textSize="@dimen/size_18sp"
+                android:hint="Pilih Tanggal"
+                android:layout_marginTop="@dimen/size_16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        <TextView
                 android:textSize="@dimen/size_16sp"
-                android:textAlignment="center"
-                android:id="@+id/tv_name"
-                android:text="loading.."
+                android:text="*Jam Mulai - Jam Selesai"
+                android:layout_marginTop="@dimen/size_16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-        <TextView
-                android:textAlignment="center"
-                android:id="@+id/tv_price"
-                android:textColor="@color/blue_primary"
-                android:text="loading.."
-                android:textStyle="bold"
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginTop="@dimen/size_16dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <Spinner
+                    android:layout_weight="1"
+                    android:id="@+id/spn_mulai"
+                    android:hint="@string/label_jam_mulai"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            <Spinner
+                    android:layout_weight="1"
+                    android:id="@+id/spn_selesai"
+                    android:hint="@string/label_jam_selesai"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.AppCompatButton
+                android:layout_above="@+id/btn_booking"
+                android:id="@+id/btn_cek"
+                android:layout_alignParentBottom="true"
+                android:text="Cek Ketersedian"
+                android:textColor="@color/white"
+                android:layout_marginTop="@dimen/size_16dp"
+                android:background="@drawable/btn_bg_blue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-        <TextView
-                android:textAlignment="center"
-                android:id="@+id/tv_open"
+        <androidx.appcompat.widget.AppCompatButton
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/size_8dp"
+                android:id="@+id/btn_booking"
+                android:visibility="invisible"
+                android:text="Booking"
                 android:textColor="@color/green"
-                android:text="loading.."
-                android:textStyle="bold"
+                android:layout_marginTop="@dimen/size_16dp"
+                android:background="@drawable/btn_bg_blue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-
-
     </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_below="@id/parent_data"
-            android:orientation="vertical"
-            android:layout_marginBottom="@dimen/size_4dp"
-            android:layout_above="@+id/btn_booking"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-    <View
-            android:background="@color/gray"
-            android:layout_marginTop="@dimen/_6dp"
-            android:layout_width="match_parent" android:layout_height="1dp"/>
-    <TextView
-            android:layout_marginTop="@dimen/_6dp"
-            android:textColor="@color/black"
-            android:text="Daftar Jadwal"
-            android:textStyle="bold"
-            android:textSize="@dimen/size_16sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_jadwal"
-            tools:listitem="@layout/item_jadwal_for_booking"
-            android:layout_marginTop="@dimen/size_16dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
-    <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_booking"
-            android:text="Booking"
-            android:visibility="gone"
-            android:textColor="@color/white"
-            android:background="@color/blue_primary"
-            android:layout_alignParentBottom="true"
-            android:layout_width="match_parent" android:layout_height="wrap_content"/>
-
-</RelativeLayout>
+</androidx.core.widget.NestedScrollView>

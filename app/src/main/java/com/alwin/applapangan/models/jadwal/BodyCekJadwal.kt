@@ -11,5 +11,8 @@ data class BodyCekJadwal(
 	val jadwalId: String? = null,
 
 	@field:SerializedName("dari_jam")
-	val dariJam: String? = null
+	val dariJam: String? = null,
+
+	@field:SerializedName("tanggal")
+	val tanggal: String? = null
 )

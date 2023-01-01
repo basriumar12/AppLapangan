@@ -134,7 +134,9 @@ data class LapangansItem(
     val namaLapangan: String? = null,
 
     @field:SerializedName("jenis_lapangan")
-    val jenisLapangan: String? = null
+    val jenisLapangan: String? = null,
+    @field:SerializedName("wc")
+    val wc: String? = null
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -146,6 +148,7 @@ data class LapangansItem(
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readString(),
         parcel.createTypedArrayList(JadwalsItem),
+        parcel.readString(),
         parcel.readString(),
         parcel.readString()
     ) {
@@ -163,6 +166,7 @@ data class LapangansItem(
         parcel.writeTypedList(jadwals)
         parcel.writeString(namaLapangan)
         parcel.writeString(jenisLapangan)
+        parcel.writeString(wc)
     }
 
     override fun describeContents(): Int {

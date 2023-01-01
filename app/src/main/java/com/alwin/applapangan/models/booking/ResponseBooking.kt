@@ -330,7 +330,9 @@ data class BookingDetailsItem(
 	val createdAt: String? = null,
 
 	@field:SerializedName("id")
-	val id: String? = null
+	val id: String? = null,
+	@field:SerializedName("tanggal")
+	val tanggal: String? = null
 ) : Parcelable {
 	constructor(parcel: Parcel) : this(
 		parcel.readString(),
@@ -339,6 +341,7 @@ data class BookingDetailsItem(
 		parcel.readString(),
 		parcel.readParcelable(Jadwal::class.java.classLoader),
 		parcel.readValue(Int::class.java.classLoader) as? Int,
+		parcel.readString(),
 		parcel.readString(),
 		parcel.readString(),
 		parcel.readString()
@@ -355,6 +358,7 @@ data class BookingDetailsItem(
 		parcel.writeString(updatedAt)
 		parcel.writeString(createdAt)
 		parcel.writeString(id)
+		parcel.writeString(tanggal)
 	}
 
 	override fun describeContents(): Int {

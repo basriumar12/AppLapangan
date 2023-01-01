@@ -50,31 +50,32 @@ class AdapterJadwalBooking(
         val datas = dataFilterList[position]
         holder.bindView(datas, itemListiner)
         var hari = ""
-        when(datas.kode_hari?.toInt()){
+        when (datas.kode_hari?.toInt()) {
             1 -> {
-               hari = " Hari Senin"
+                hari = " Hari Senin"
             }
             2 -> {
-               hari = " Hari Selasa"
+                hari = " Hari Selasa"
             }
             3 -> {
-               hari = " Hari Rabu"
+                hari = " Hari Rabu"
             }
             4 -> {
-               hari = " Hari Kamis"
+                hari = " Hari Kamis"
             }
             5 -> {
-               hari = " Hari Jumat"
+                hari = " Hari Jumat"
             }
             6 -> {
-               hari = " Hari Sabtu"
+                hari = " Hari Sabtu"
             }
             7 -> {
-               hari = " Hari Minggu"
+                hari = " Hari Minggu"
             }
         }
-        holder.itemView.tv_date.text = "Jadwal : Hari $hari, jam : ${datas.dari_jam} - ${datas.sampai_jam} "
-        
+        holder.itemView.tv_date.text =
+            "Jadwal : Hari $hari, jam : ${datas.dari_jam} - ${datas.sampai_jam} / tanggal ${datas.tanggal}"
+
     }
 
     class ViewHolder(itemView: View) :
@@ -85,8 +86,6 @@ class AdapterJadwalBooking(
             itemView.setOnClickListener {
                 listiner.onClickGrup(data)
             }
-
-
 
 
         }
@@ -102,7 +101,7 @@ class AdapterJadwalBooking(
                 } else {
                     val resultList = ArrayList<BookingDetailsItem>()
                     for (row in data) {
-                        if (row.jadwal  .toString()?.toLowerCase(Locale.ROOT)
+                        if (row.jadwal.toString()?.toLowerCase(Locale.ROOT)
                                 ?.contains(charSearch.toLowerCase(Locale.ROOT))!!
                         ) {
                             resultList.add(row)
